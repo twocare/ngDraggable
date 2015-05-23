@@ -1,6 +1,10 @@
 /*
- *
+ * https://github.com/esdlabs/ngDraggable
+ * 
+ * Custom fork of:
  * https://github.com/fatlinesofcode/ngDraggable
+ *
+ * @author Javis Perez <javisperez@esd.com.do>
  */
 angular.module("ngDraggable", [])
         .service('ngDraggable', [function() {
@@ -295,15 +299,16 @@ angular.module("ngDraggable", [])
                     };
 
                     var onDragEnd = function (evt, obj) {
-
                         // don't listen to drop events if this is the element being dragged
                         // only update the styles and return
                         if (!_dropEnabled || _myid === obj.uid) {
                             updateDragStyles(false, obj.element);
                             return;
                         }
+
                         if (isTouching(obj.x, obj.y, obj.element)) {
                             // call the ngDraggable ngDragSuccess element callback
+
                            if(obj.callback){
                                 obj.callback(obj);
                             }
@@ -349,10 +354,10 @@ angular.module("ngDraggable", [])
                         var bounds = element[0].getBoundingClientRect();// ngDraggable.getPrivOffset(element);
                         x -= $document[0].body.scrollLeft + $document[0].documentElement.scrollLeft;
                         y -= $document[0].body.scrollTop + $document[0].documentElement.scrollTop;
-                        return  x >= bounds.left
-                                && x <= bounds.right
-                                && y <= bounds.bottom
-                                && y >= bounds.top;
+                        return  x >= bounds.left + window.pageXOffset
+                                && x <= bounds.right + window.pageXOffset
+                                && y <= bounds.bottom + window.pageYOffset
+                                && y >= bounds.top + window.pageYOffset;
                     };
 
                     initialize();
